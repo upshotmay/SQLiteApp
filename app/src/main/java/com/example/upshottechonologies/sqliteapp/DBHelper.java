@@ -39,6 +39,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public String fetch()
     {
+        String sql = "SELECT "+ContactClass.NAME +" FROM "+ContactClass.TABLE_NAME+ " WHERE "+ContactClass.ID+"=3";
         String SQLSelect = "SELECT * FROM "+ ContactClass.TABLE_NAME;
         Cursor cursor;
         String res ="";
@@ -46,9 +47,30 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor = db.rawQuery(SQLSelect, null);
         while (cursor.moveToNext())
         {
-            res+="ID:"+cursor.getInt(0)+" Name:"+cursor.getInt(1)+ " Phone:"+cursor.getInt(2)+"\n";
+            res+="ID:"+cursor.getInt(0)+" Name:"+cursor.getString(1)+ " Phone:"+cursor.getInt(2)+"\n";
             //System.out.println("ID:"+cursor.getInt(0)+ "\n Name:"+cursor.getString(1)+ "\n Phone:"+ cursor.getString(2));
         }
         return res;
+    }
+
+    public void update(String name, String phone, int id)
+    {
+        String sql = "UPDATE "+ContactClass.TABLE_NAME + " SET "+
+                ContactClass.NAME +"="+"'"+name +"'"+ ","+ContactClass.PHONE+"="+"'"+phone+"'" + " WHERE "+
+                ContactClass.ID+"="+id;
+
+        String sql2 = "UPDATE "+ContactClass.TABLE_NAME + " SET "+ ContactClass.NAME+"=?, "+ContactClass.PHONE+"=? WHERE "+ContactClass.ID+"="+id;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        //db.execSQL(sql);
+        db.execSQL(sql2, new String[]{name, phone});
+
+    }
+
+    public void delete(int id)
+    {
+        String sql = "DELETE FROM "+ContactClass.TABLE_NAME +" WHERE "+ContactClass.ID+"="+id;
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(sql);
     }
 }

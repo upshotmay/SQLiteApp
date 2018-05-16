@@ -8,8 +8,8 @@ import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText mName, mPhone;
-    private Button mInsertBtn, fetch;
+    private EditText mName, mPhone, mId;
+    private Button mInsertBtn, fetch, update, delete;
     private DBHelper dbHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +18,24 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DBHelper(this);
         mName = findViewById(R.id.etName);
         mPhone = findViewById(R.id.etPhone);
+        update = findViewById(R.id.update);
+        delete = findViewById(R.id.delete);
+        mId = findViewById(R.id.etId);
+
+
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbHelper.update(mName.getText().toString(), mPhone.getText().toString(), Integer.parseInt(mId.getText().toString()));
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbHelper.delete(Integer.parseInt(mId.getText().toString()));
+            }
+        });
 
         mInsertBtn = findViewById(R.id.submit);
         fetch = findViewById(R.id.fetch);
